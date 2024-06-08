@@ -1,0 +1,38 @@
+[package]
+name = "seedtool-cli"
+version = "0.1.0"
+edition = "2021"
+description = "Gordian Seed Tool."
+authors = ["Blockchain Commons"]
+keywords = ["crypto", "random", "seed", "mnemonic", "bitcoin"]
+repository = "https://github.com/BlockchainCommons/bc-envelope-cli-rust"
+readme = "README.md"
+license = "BSD-2-Clause-Patent"
+categories = ["cryptography::cryptocurrencies", "command-line-utilities"]
+documentation = "https://docs.rs/bc-envelope-cli"
+
+[[bin]]
+name = "seedtool"
+path = "src/main.rs"
+
+[dependencies]
+dcbor = "^0.14.0"
+bc-ur = "^0.4.2"
+bc-envelope = "^0.17.5"
+bc-components = "^0.11.0"
+bc-rand = "^0.1.0"
+bc-crypto = "^0.3.0"
+sskr = "^0.3.4"
+
+clap = { version = "^4.4.3", features = ["derive", "unstable-styles"] }
+anyhow = "^1.0.0"
+anstyle = "^1.0.1"
+hex = "^0.4.3"
+regex = "^1.9.5"
+clap-num = "1.1.1"
+bytes = "1.6.0"
+bip39 = "2.0.0"
+
+[dev-dependencies]
+indoc = "^2.0.0"
+assert_cmd = "^2.0.12"
