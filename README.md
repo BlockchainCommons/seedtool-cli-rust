@@ -36,14 +36,6 @@ To install from source, clone this repo, change to its root directory and run:
 cargo install --path .
 ```
 
-## Command Line Syntax
-
-This is the command line syntax as output by typing `seedtool --help`:
-
-```
-Forthcoming
-```
-
 ## Examples
 
 - Examples of usage can be found in [USAGE.md](./USAGE.md).
