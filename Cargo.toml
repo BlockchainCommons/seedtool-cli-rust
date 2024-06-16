@@ -1,11 +1,11 @@
 [package]
 name = "seedtool-cli"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 description = "A command-line tool for generating and transforming cryptographic seeds."
 authors = ["Blockchain Commons"]
 keywords = ["crypto", "random", "seed", "mnemonic", "bitcoin"]
-repository = "https://github.com/BlockchainCommons/bc-seedtool-cli-rust"
+repository = "https://github.com/BlockchainCommons/seedtool-cli-rust"
 readme = "README.md"
 license = "BSD-2-Clause-Patent"
 categories = ["cryptography::cryptocurrencies", "command-line-utilities"]
