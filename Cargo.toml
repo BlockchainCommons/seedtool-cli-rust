@@ -1,8 +1,8 @@
 [package]
 name = "seedtool-cli"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
-description = "Gordian Seed Tool."
+description = "A command-line tool for generating and transforming cryptographic seeds."
 authors = ["Blockchain Commons"]
 keywords = ["crypto", "random", "seed", "mnemonic", "bitcoin"]
 repository = "https://github.com/BlockchainCommons/bc-envelope-cli-rust"

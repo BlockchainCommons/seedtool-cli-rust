@@ -20,6 +20,8 @@ The [original SeedTool was written in C++](https://github.com/BlockchainCommons/
 
 The new SeedTool also exclusively uses Gordian Envelope for exporting and importing seeds with metadata, for sharding seeds with SSKR, and for writing and reading seeds in multipart UR format.
 
+If you have the old SeedTool installed, you should uninstall it before installing the new SeedTool, or ensure that the new SeedTool is in your PATH before the old SeedTool.
+
 ## Installation
 
 To install from crates.io, run:
