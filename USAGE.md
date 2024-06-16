@@ -68,7 +68,7 @@ ur:envelope/lptpsogddezsdmjosscylolpettysbeetkjsrykpoyadcsspoybdtpsoiogtkkcxguih
 ### Use the envelope Rust command line tool to show the envelope structure
 
 ```
-ur:envelope/lptpsogddezsdmjosscylolpettysbeetkjsrykpoyadcsspoybdtpsoiogtkkcxguihihieoybetpsosecyiylywnlaoyaatpsojtghisinjkcxinjkcxhscxjtjljyihmhyktswe
+$ envelope format ur:envelope/lptpsogddezsdmjosscylolpettysbeetkjsrykpoyadcsspoybdtpsoiogtkkcxguihihieoybetpsosecyiylywnlaoyaatpsojtghisinjkcxinjkcxhscxjtjljyihmhyktswe
 Bytes(16) [
     'isA': 'Seed'
     'date': 2024-07-01
