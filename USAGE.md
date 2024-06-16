@@ -107,7 +107,7 @@ $ seedtool --out envelope | tr '[:lower:]' '[:upper:]' | tee /dev/tty | qrencode
 UR:ENVELOPE/LFTPSOGDIEVEADGHSARHHNFPDEKTZTJYSEDACFDPOYADCSSPGOHFURVS
 ```
 
-![](manual-images/seedqrcode.png)
+![](images/seedqrcode.png)
 
 ### Generate a 64-byte seed using a deterministic random number generator and encode it as a multi-part UR with a maximum fragment size of 20 bytes
 
