@@ -1,15 +1,15 @@
 [package]
 name = "seedtool-cli"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 description = "A command-line tool for generating and transforming cryptographic seeds."
 authors = ["Blockchain Commons"]
 keywords = ["crypto", "random", "seed", "mnemonic", "bitcoin"]
-repository = "https://github.com/BlockchainCommons/bc-envelope-cli-rust"
+repository = "https://github.com/BlockchainCommons/bc-seedtool-cli-rust"
 readme = "README.md"
 license = "BSD-2-Clause-Patent"
 categories = ["cryptography::cryptocurrencies", "command-line-utilities"]
-documentation = "https://docs.rs/bc-envelope-cli"
+documentation = "https://docs.rs/seedtool-cli"
 
 [[bin]]
 name = "seedtool"
