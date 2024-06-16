@@ -16,7 +16,9 @@
 
 ## Deprecation of C++ SeedTool
 
-The [original SeedTool was written in C++](https://github.com/BlockchainCommons/seedtool-cli) and is now deprecated. The new SeedTool is written in Rust and is a complete rewrite. The new SeedTool's inputs and outputs are compatible with the old SeedTool, and most of the same command line options are supported. The new SeedTool is more flexible and extensible, and is designed to support additional functionality.
+The [original SeedTool was written in C++](https://github.com/BlockchainCommons/seedtool-cli) and is now deprecated. The new SeedTool is a complete rewrite in Rust. The new SeedTool's inputs and outputs are mostly compatible with the old SeedTool, and most of the same command line options are supported. The new SeedTool is more flexible and extensible, and is designed to support additional functionality.
+
+The new SeedTool also exclusively uses Gordian Envelope for exporting and importing seeds with metadata, for sharding seeds with SSKR, and for writing and reading seeds in multipart UR format.
 
 ## Installation
 
