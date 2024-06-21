@@ -36,3 +36,4 @@ bip39 = "2.0.0"
 [dev-dependencies]
 indoc = "^2.0.0"
 assert_cmd = "^2.0.12"
+hex-literal = "^0.4.1"

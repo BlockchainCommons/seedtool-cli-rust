@@ -15,7 +15,7 @@ use super::{
     Base10Format,
     IntsFormat,
     Bip39Format,
-    SskrFormat,
+    SSKRFormat,
     EnvelopeFormat,
     MultipartFormat,
 };
@@ -27,10 +27,6 @@ pub trait InputFormat {
 pub trait OutputFormat {
     fn process_output(&self, _state: Cli) -> Result<String>;
 }
-
-// pub trait Format: InputFormat + OutputFormat { }
-
-// impl<T> Format for T where T: InputFormat + OutputFormat { }
 
 #[derive(ValueEnum, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum InputFormatKey {
@@ -65,7 +61,7 @@ pub fn select_input_format(input_format: InputFormatKey) -> Box<dyn InputFormat>
         InputFormatKey::Base10 => Box::new(Base10Format),
         InputFormatKey::Ints => Box::new(IntsFormat),
         InputFormatKey::Bip39 => Box::new(Bip39Format),
-        InputFormatKey::Sskr => Box::new(SskrFormat),
+        InputFormatKey::Sskr => Box::new(SSKRFormat),
         InputFormatKey::Envelope => Box::new(EnvelopeFormat),
         InputFormatKey::Multipart => Box::new(MultipartFormat),
     }
@@ -102,7 +98,7 @@ pub fn select_output_format(output_format: OutputFormatKey) -> Box<dyn OutputFor
         OutputFormatKey::Base10 => Box::new(Base10Format),
         OutputFormatKey::Ints => Box::new(IntsFormat),
         OutputFormatKey::Bip39 => Box::new(Bip39Format),
-        OutputFormatKey::Sskr => Box::new(SskrFormat),
+        OutputFormatKey::Sskr => Box::new(SSKRFormat),
         OutputFormatKey::Envelope => Box::new(EnvelopeFormat),
         OutputFormatKey::Multipart => Box::new(MultipartFormat),
     }

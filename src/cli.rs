@@ -6,7 +6,7 @@ use clap_num::number_range;
 use anyhow::Result;
 use bc_envelope::prelude::*;
 use bc_components::{ SSKRSpec, SSKRGroupSpec };
-use crate::formats::{ InputFormatKey, OutputFormatKey };
+use crate::formats::{ InputFormatKey, OutputFormatKey, SSKRFormatKey };
 use crate::random::DeterministicRandomNumberGenerator;
 use crate::seed::Seed;
 use crate::styles;
@@ -55,21 +55,21 @@ pub struct Cli {
     /// The input format.
     /// If not specified, a new random seed is generated using a secure random number generator.
     #[arg(
+        value_enum,
         short,
         long,
         value_name = "INPUT_TYPE",
         default_value_t = InputFormatKey::Random,
-        value_enum
     )]
     pub r#in: InputFormatKey,
 
     /// The output format.
     #[arg(
+        value_enum,
         short,
         long,
         value_name = "OUTPUT_TYPE",
         default_value_t = OutputFormatKey::Hex,
-        value_enum
     )]
     pub out: OutputFormatKey,
 
@@ -125,10 +125,16 @@ pub struct Cli {
     )]
     pub additional_parts: usize,
 
-    /// SSKR group specifications.
+    /// Group specifications.
     /// May appear more than once.
     /// M must be < N
-    #[arg(help_heading = Some("SSKR Output"), short, long, value_name = "M-of-N", num_args = 1..16)]
+    #[arg(
+        help_heading = Some("SSKR Output"),
+        short,
+        long,
+        value_name = "M-of-N",
+        num_args = 1..16
+    )]
     #[clap(value_parser = SSKRGroupSpec::parse)]
     pub groups: Vec<SSKRGroupSpec>,
 
@@ -143,6 +149,17 @@ pub struct Cli {
     )]
     #[clap(value_parser = parse_group_threshold)]
     pub group_threshold: usize,
+
+    /// Output format.
+    #[arg(
+        value_enum,
+        help_heading = Some("SSKR Output"),
+        value_name = "SSKR_FORMAT",
+        short,
+        long,
+        default_value_t = SSKRFormatKey::Envelope,
+    )]
+    pub sskr_format: SSKRFormatKey,
 
     /// Use a deterministic random number generator with the given seed string.
     ///

@@ -32,7 +32,7 @@ pub use ints::IntsFormat;
 mod random;
 pub use random::RandomFormat;
 mod sskr;
-pub use sskr::SskrFormat;
+pub use sskr::{SSKRFormat, SSKRFormatKey};
 mod envelope;
 pub use envelope::EnvelopeFormat;
 mod multipart;
