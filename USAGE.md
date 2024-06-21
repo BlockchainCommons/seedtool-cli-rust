@@ -98,6 +98,35 @@ ur:envelope/lftansfwlrhdcebegwdwmhspkeetamjyhslfsndslbahktuegyjlrfykmnrtltrdidwm
 6171f066a3727480ea435aa5c5baeb90
 ```
 
+### Generate a 16-byte seed and encode it using SSKR in two groups, 2-of-3 and 3-of-5, and display the shares in Bytewords format.
+
+```
+$ seedtool --out sskr --group-threshold 2 --groups 2-of-3 3-of-5 --sskr-format btw
+tuna next keep gyro hill nail body acid able lion scar loud bias drum cook vibe wolf poem unit code data lung gift puma rust hang dark need gray
+tuna next keep gyro hill nail body acid acid iron idea flew zaps keys kept edge away gush nail figs half axis main urge idea road easy gear miss
+tuna next keep gyro hill nail body acid also flux monk aqua zone leaf surf hope cook foxy gyro holy scar noon taxi jowl next rust wand fair puma
+tuna next keep gyro hill nail body brag able gush heat diet road body numb frog very mint diet vial zero paid help puff lamb claw kept visa film
+tuna next keep gyro hill nail body brag acid king ugly iron jump list jolt flew able yawn menu frog able quad film fund kept nail user work list
+tuna next keep gyro hill nail body brag also fund half keno kiwi door race purr poem good jade fern data love luck heat half note limp help note
+tuna next keep gyro hill nail body brag apex into toys even race roof king ramp gems duty tent nail urge maze wall oboe holy cola drop gala days
+tuna next keep gyro hill nail body brag aqua lamb calm skew aqua hang work iris claw chef chef fund math roof navy king solo body jury dark city
+```
+
+### Recover an SSKR-encoded seed using 2 shares from the first group and 3 shares from the second group.
+
+The input format is automatically detected as Bytewords.
+
+```
+$ seedtool --in sskr
+tuna next keep gyro hill nail body acid able lion scar loud bias drum cook vibe wolf poem unit code data lung gift puma rust hang dark need gray
+tuna next keep gyro hill nail body acid also flux monk aqua zone leaf surf hope cook foxy gyro holy scar noon taxi jowl next rust wand fair puma
+tuna next keep gyro hill nail body brag able gush heat diet road body numb frog very mint diet vial zero paid help puff lamb claw kept visa film
+tuna next keep gyro hill nail body brag also fund half keno kiwi door race purr poem good jade fern data love luck heat half note limp help note
+tuna next keep gyro hill nail body brag aqua lamb calm skew aqua hang work iris claw chef chef fund math roof navy king solo body jury dark city
+^D
+0930f6a62ae9d4bb118515c3176450c4
+```
+
 ## UR
 
 ### Generate a seed, encode it as UR, transform it to upper case, display it on the console, and encode it to a QR Code in the file "seedqrcode.png"
