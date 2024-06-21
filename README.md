@@ -42,6 +42,13 @@ cargo install --path .
 - The full user guide is in [MANUAL.md](./MANUAL.md).
     - *forthcoming*
 
+## Version History
+
+### 0.1.4: June 20, 2024
+
+- The new `--sskr-format` (`-s`) option can be used to specify SSKR output format, including envelope (the default), bytewords (standard, minimal, or URI styles), and `ur:sskr`.
+- Parsing SSKR shares autodetects the format, and will handle all of the above formats, and also the legacy `ur:crypto-sskr` format.
+
 ## Status - Alpha
 
 `seedtool`  is currently under active development and in the alpha testing phase. It should not be used for production tasks until it has had further testing and auditing. See [Blockchain Commons' Development Phases](https://github.com/BlockchainCommons/Community/blob/master/release-path.md).
