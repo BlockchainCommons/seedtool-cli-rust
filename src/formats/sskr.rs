@@ -2,7 +2,6 @@ use crate::{cli::Cli, seed::Seed};
 use anyhow::{bail, Result};
 use bc_components::{sskr_generate, SSKRShare, SymmetricKey, tags};
 use bc_envelope::prelude::*;
-use bytes::Bytes;
 use clap::ValueEnum;
 use sskr::{Secret, Spec};
 
@@ -99,7 +98,7 @@ fn parse_envelopes(input: &str) -> Result<Seed> {
 }
 
 fn from_untagged_cbor_shares(untagged_cbor_shares: Vec<CBOR>) -> Result<Seed> {
-    let data_shares: Vec<Bytes> = untagged_cbor_shares
+    let data_shares: Vec<Vec<u8>> = untagged_cbor_shares
         .into_iter().map(|cbor| cbor.try_into_byte_string())
         .collect::<Result<Vec<_>>>()?;
     let recovered_secret: Secret = sskr::sskr_combine(&data_shares)?;

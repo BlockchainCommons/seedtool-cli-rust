@@ -1,7 +1,6 @@
 use crate::{ cli::Cli, seed::Seed };
 use anyhow::Result;
 use bip39::Mnemonic;
-use bytes::Bytes;
 
 use super::{ InputFormat, OutputFormat };
 
@@ -10,7 +9,7 @@ pub struct Bip39Format;
 impl InputFormat for Bip39Format {
     fn process_input(&self, mut state: Cli) -> Result<Cli> {
         let mnemonic = Mnemonic::parse_normalized(&state.expect_input()?)?;
-        state.seed = Some(Seed::new(Bytes::from(mnemonic.to_entropy())));
+        state.seed = Some(Seed::new(mnemonic.to_entropy()));
         Ok(state)
     }
 }

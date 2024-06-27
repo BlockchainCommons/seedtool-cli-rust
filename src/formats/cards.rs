@@ -1,6 +1,5 @@
 use crate::{ cli::Cli, random::deterministic_random, seed::Seed, util::data_to_alphabet };
 use anyhow::{ Result, bail };
-use bytes::Bytes;
 
 use super::{ InputFormat, OutputFormat };
 
@@ -46,7 +45,7 @@ pub fn parse_suit(c: char) -> Result<usize> {
     bail!("Invalid card rank. Allowed: [D,C,H,S]");
 }
 
-pub fn cards_to_data(cards: &str) -> Result<Bytes> {
+pub fn cards_to_data(cards: &str) -> Result<Vec<u8>> {
     let len = cards.len();
     if len % 2 != 0 {
         bail!("Cards string must have even number of characters.");
@@ -70,7 +69,7 @@ pub fn cards_to_data(cards: &str) -> Result<Bytes> {
         result.push(n as u8);
     }
 
-    Ok(result.into())
+    Ok(result)
 }
 
 pub fn to_card(n: usize) -> String {

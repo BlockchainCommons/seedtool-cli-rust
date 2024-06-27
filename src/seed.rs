@@ -2,11 +2,10 @@ use anyhow::{bail, Error, Result};
 use bc_components::tags;
 use bc_ur::prelude::*;
 use bc_envelope::prelude::*;
-use bytes::Bytes;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Seed {
-    data: Bytes,
+    data: Vec<u8>,
     name: String, // Empty string: no name
     note: String, // Empty string: no note
     creation_date: Option<dcbor::Date>,
@@ -27,14 +26,14 @@ impl Seed {
         U: AsRef<str>,
     {
         Self {
-            data: data.as_ref().to_vec().into(),
+            data: data.as_ref().to_vec(),
             name: name.as_ref().to_string(),
             note: note.as_ref().to_string(),
             creation_date,
         }
     }
 
-    pub fn data(&self) -> &Bytes {
+    pub fn data(&self) -> &Vec<u8> {
         &self.data
     }
 

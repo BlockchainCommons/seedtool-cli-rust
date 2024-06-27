@@ -1,6 +1,5 @@
 use std::io::{ self, Read };
 use bc_rand::{ RandomNumberGenerator, SecureRandomNumberGenerator };
-use bytes::Bytes;
 use clap::Parser;
 use clap_num::number_range;
 use anyhow::Result;
@@ -201,9 +200,9 @@ impl Cli {
         self.seed.as_ref().expect("Seed not initialized")
     }
 
-    pub fn random_data(&mut self, size: usize) -> Bytes {
+    pub fn random_data(&mut self, size: usize) -> Vec<u8> {
         match &mut self.rng {
-            Some(RngSource::Secure(rng)) => Bytes::from(rng.random_data(size)),
+            Some(RngSource::Secure(rng)) => rng.random_data(size),
             Some(RngSource::Deterministic(rng)) => rng.deterministic_random_data(size),
             None => panic!("RNG not initialized"),
         }
