@@ -7,7 +7,7 @@
 **NOTE:** Preview version. Not ready for production use.
 
 <p align="center">
-  <img width="640" height="320" src="images/seedtool-screen.png">
+  <img width="960" height="480" src="images/seedtool-rust-screen.png">
 </p>
 
 ## Introduction
