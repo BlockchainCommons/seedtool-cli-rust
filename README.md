@@ -40,7 +40,6 @@ cargo install --path .
 
 - Examples of usage can be found in [USAGE.md](./USAGE.md).
 - The full user guide is in [MANUAL.md](./MANUAL.md).
-    - *forthcoming*
 
 ## Version History
 
