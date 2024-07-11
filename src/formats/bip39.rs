@@ -2,9 +2,19 @@ use crate::{ cli::Cli, seed::Seed };
 use anyhow::Result;
 use bip39::Mnemonic;
 
-use super::{ InputFormat, OutputFormat };
+use super::{ Format, InputFormat, OutputFormat };
 
 pub struct Bip39Format;
+
+impl Format for Bip39Format {
+    fn name(&self) -> &str {
+        "bip39"
+    }
+    
+    fn round_trippable(&self) -> bool {
+        true
+    }
+}
 
 impl InputFormat for Bip39Format {
     fn process_input(&self, mut state: Cli) -> Result<Cli> {

@@ -16,7 +16,7 @@ mod random;
 #[doc(hidden)]
 mod seed;
 
-use anyhow::Result;
+use anyhow::{bail, Result};
 use bc_rand::SecureRandomNumberGenerator;
 use clap::Parser;
 use cli::{ Cli, RngSource };
@@ -40,6 +40,10 @@ fn main() -> Result<()> {
 
     let input_format = select_input_format(cli.r#in);
     let output_format = select_output_format(cli.out);
+
+    if !output_format.round_trippable() && input_format.name() != "random" {
+        bail!("Input for output form \"{}\" must be random.", output_format.name());
+    }
 
     cli = input_format.process_input(cli)?;
     let output = output_format.process_output(cli)?;

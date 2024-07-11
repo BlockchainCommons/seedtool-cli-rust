@@ -20,11 +20,16 @@ use super::{
     MultipartFormat,
 };
 
-pub trait InputFormat {
+pub trait Format {
+    fn name(&self) -> &str;
+    fn round_trippable(&self) -> bool;
+}
+
+pub trait InputFormat: Format {
     fn process_input(&self, state: Cli) -> Result<Cli>;
 }
 
-pub trait OutputFormat {
+pub trait OutputFormat: Format {
     fn process_output(&self, _state: Cli) -> Result<String>;
 }
 

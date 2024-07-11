@@ -4,9 +4,19 @@ use bc_envelope::prelude::*;
 
 use crate::{ cli::Cli, seed::Seed };
 
-use super::{ InputFormat, OutputFormat };
+use super::{ Format, InputFormat, OutputFormat };
 
 pub struct MultipartFormat;
+
+impl Format for MultipartFormat {
+    fn name(&self) -> &str {
+        "multipart"
+    }
+
+    fn round_trippable(&self) -> bool {
+        true
+    }
+}
 
 impl InputFormat for MultipartFormat {
     fn process_input(&self, mut state: Cli) -> Result<Cli> {

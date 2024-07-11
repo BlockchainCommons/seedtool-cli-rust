@@ -6,9 +6,19 @@ use crate::{
 };
 use anyhow::Result;
 
-use super::{ InputFormat, OutputFormat };
+use super::{ Format, InputFormat, OutputFormat };
 
 pub struct Base6Format;
+
+impl Format for Base6Format {
+    fn name(&self) -> &str {
+        "base6"
+    }
+
+    fn round_trippable(&self) -> bool {
+        false
+    }
+}
 
 impl InputFormat for Base6Format {
     fn process_input(&self, mut state: Cli) -> Result<Cli> {

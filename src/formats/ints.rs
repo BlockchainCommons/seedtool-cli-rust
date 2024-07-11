@@ -3,9 +3,20 @@ use crate::{
 };
 use anyhow::Result;
 
-use super::{ InputFormat, OutputFormat };
+use super::{ Format, InputFormat, OutputFormat };
 
 pub struct IntsFormat;
+
+impl Format for IntsFormat {
+    fn name(&self) -> &str {
+        "ints"
+    }
+
+    fn round_trippable(&self) -> bool {
+        false
+    }
+}
+
 
 impl InputFormat for IntsFormat {
     fn process_input(&self, mut state: Cli) -> Result<Cli> {

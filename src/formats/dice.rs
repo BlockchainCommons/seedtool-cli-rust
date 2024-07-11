@@ -3,9 +3,19 @@ use crate::{
 };
 use anyhow::Result;
 
-use super::{ InputFormat, OutputFormat };
+use super::{ Format, InputFormat, OutputFormat };
 
 pub struct DiceFormat;
+
+impl Format for DiceFormat {
+    fn name(&self) -> &str {
+        "dice"
+    }
+
+    fn round_trippable(&self) -> bool {
+        false
+    }
+}
 
 impl InputFormat for DiceFormat {
     fn process_input(&self, mut state: Cli) -> Result<Cli> {

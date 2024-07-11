@@ -5,9 +5,19 @@ use bc_envelope::prelude::*;
 use clap::ValueEnum;
 use sskr::{Secret, Spec};
 
-use super::{ InputFormat, OutputFormat };
+use super::{ Format, InputFormat, OutputFormat };
 
 pub struct SSKRFormat;
+
+impl Format for SSKRFormat {
+    fn name(&self) -> &str {
+        "sskr"
+    }
+
+    fn round_trippable(&self) -> bool {
+        true
+    }
+}
 
 impl InputFormat for SSKRFormat {
     fn process_input(&self, mut state: Cli) -> Result<Cli> {

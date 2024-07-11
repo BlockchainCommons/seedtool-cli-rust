@@ -6,9 +6,19 @@ use crate::{
 };
 use anyhow::Result;
 
-use super::{ InputFormat, OutputFormat };
+use super::{ Format, InputFormat, OutputFormat };
 
 pub struct BitsFormat;
+
+impl Format for BitsFormat {
+    fn name(&self) -> &str {
+        "bits"
+    }
+    
+    fn round_trippable(&self) -> bool {
+        false
+    }
+}
 
 impl InputFormat for BitsFormat {
     fn process_input(&self, mut state: Cli) -> Result<Cli> {

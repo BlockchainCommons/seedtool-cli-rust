@@ -1,9 +1,19 @@
 use crate::{ cli::Cli, random::deterministic_random, seed::Seed, util::data_to_alphabet };
 use anyhow::{ Result, bail };
 
-use super::{ InputFormat, OutputFormat };
+use super::{ Format, InputFormat, OutputFormat };
 
 pub struct CardsFormat;
+
+impl Format for CardsFormat {
+    fn name(&self) -> &str {
+        "cards"
+    }
+
+    fn round_trippable(&self) -> bool {
+        false
+    }
+}
 
 impl InputFormat for CardsFormat {
     fn process_input(&self, mut state: Cli) -> Result<Cli> {

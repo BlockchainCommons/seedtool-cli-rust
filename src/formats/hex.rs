@@ -1,9 +1,19 @@
 use crate::{cli::Cli, seed::Seed};
 use anyhow::Result;
 
-use super::{ InputFormat, OutputFormat };
+use super::{ Format, InputFormat, OutputFormat };
 
 pub struct HexFormat;
+
+impl Format for HexFormat {
+    fn name(&self) -> &str {
+        "hex"
+    }
+
+    fn round_trippable(&self) -> bool {
+        true
+    }
+}
 
 impl InputFormat for HexFormat {
     fn process_input(&self, mut state: Cli) -> Result<Cli> {

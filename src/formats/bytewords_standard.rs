@@ -2,9 +2,19 @@ use crate::{ cli::Cli, seed::Seed };
 use anyhow::Result;
 use bc_ur::prelude::*;
 
-use super::{ InputFormat, OutputFormat };
+use super::{ Format, InputFormat, OutputFormat };
 
 pub struct BytewordsStandardFormat;
+
+impl Format for BytewordsStandardFormat {
+    fn name(&self) -> &str {
+        "btw"
+    }
+
+    fn round_trippable(&self) -> bool {
+        true
+    }
+}
 
 impl InputFormat for BytewordsStandardFormat {
     fn process_input(&self, mut state: Cli) -> Result<Cli> {
