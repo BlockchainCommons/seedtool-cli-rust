@@ -27,42 +27,42 @@ fn test_formats() -> Result<()> {
 
     // Most format types are not round-trippable
     let base6 = "3123121543215241";
-    assert_eq!(run_cli(&["--in", "hex", "--out", "base6", hex])?, base6);
+    assert_eq!(run_cli(&["--deterministic", "TEST", "--out", "base6", hex])?, base6);
     assert_eq!(
         run_cli(&["--in", "base6", "--out", "hex", base6])?,
         "cb97f8ff03b3434258a7a8974e3187a0"
     );
 
     let base10 = "6245132875418481";
-    assert_eq!(run_cli(&["--in", "hex", "--out", "base10", hex])?, base10);
+    assert_eq!(run_cli(&["--deterministic", "TEST", "--out", "base10", hex])?, base10);
     assert_eq!(
         run_cli(&["--in", "base10", "--out", "hex", base10])?,
         "3f3830e7e4d4f95c3e037630c6ae811a"
     );
 
     let bits = "1001000111001010";
-    assert_eq!(run_cli(&["--in", "hex", "--out", "bits", hex])?, bits);
+    assert_eq!(run_cli(&["--deterministic", "TEST", "--out", "bits", hex])?, bits);
     assert_eq!(
         run_cli(&["--in", "bits", "--out", "hex", bits])?,
         "980947e4f8cd49459819d9453fca085f"
     );
 
     let cards = "6hjckdah6c4dtc8skh2htd6ctsjd5s8c";
-    assert_eq!(run_cli(&["--in", "hex", "--out", "cards", hex])?, cards);
+    assert_eq!(run_cli(&["--deterministic", "TEST", "--out", "cards", hex])?, cards);
     assert_eq!(
         run_cli(&["--in", "cards", "--out", "hex", cards])?,
         "1d0f2f3b502256cf56e3eaaa9f95ef71"
     );
 
     let dice = "4234232654326352";
-    assert_eq!(run_cli(&["--in", "hex", "--out", "dice", hex])?, dice);
+    assert_eq!(run_cli(&["--deterministic", "TEST", "--out", "dice", hex])?, dice);
     assert_eq!(
         run_cli(&["--in", "dice", "--out", "hex", dice])?,
         "eefa19b88c5846e71fcb52d007066ae4"
     );
 
     let ints = "6 2 4 5 1 3 2 8 7 5 4 1 8 4 8 1";
-    assert_eq!(run_cli(&["--in", "hex", "--out", "ints", hex])?, ints);
+    assert_eq!(run_cli(&["--deterministic", "TEST", "--out", "ints", hex])?, ints);
     assert_eq!(
         run_cli(&["--in", "ints", "--out", "hex", ints])?,
         "19a7830e032c0e027d176162112ee67e"
