@@ -182,7 +182,7 @@ fn parse_sskr_seed(input: &str) -> Result<Seed> {
         return Ok(seed);
     }
 
-    bail!("Could not parse input as SSKR shares");
+    bail!("Insufficient or invalid SSKR shares.");
 }
 
 #[cfg(test)]
