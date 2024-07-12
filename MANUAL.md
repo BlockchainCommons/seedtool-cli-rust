@@ -1,4 +1,4 @@
- # 🌱 Seedtool-CLI-Rust Manual (v0.1.6)
+ # 🌱 Seedtool-CLI-Rust Manual (v0.1.7)
 
 ## July 9, 2024
 

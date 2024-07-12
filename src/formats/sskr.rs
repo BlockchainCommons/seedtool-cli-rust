@@ -101,7 +101,9 @@ fn make_bytewords_shares(spec: &sskr::Spec, seed: &Seed, style: bytewords::Style
 
 fn parse_envelopes(input: &str) -> Result<Seed> {
     let share_strings: Vec<String> = input.split_whitespace().map(|s| s.to_string()).collect();
-    let share_envelopes: Vec<Envelope> = share_strings.iter().map(Envelope::from_ur_string).collect::<Result<Vec<_>>>()?;
+    let share_envelopes: Vec<Envelope> = share_strings.iter().filter_map(|string| {
+        Envelope::from_ur_string(string).ok()
+    }).collect();
     let share_envelopes_refs: Vec<&Envelope> = share_envelopes.iter().collect();
     let recovered_envelope = Envelope::sskr_join(&share_envelopes_refs)?.unwrap_envelope()?;
     Seed::try_from(recovered_envelope)
@@ -129,8 +131,8 @@ fn parse_bytewords(input: &str, style: bytewords::Style) -> Result<Seed> {
         _ => input.split_whitespace().map(|s| s.to_string()).collect(),
     };
     let cbor_data_shares: Vec<Vec<u8>> = share_strings
-        .iter().map(|s| bytewords::decode(s, style))
-        .collect::<Result<Vec<_>>>()?;
+        .iter().filter_map(|s| bytewords::decode(s, style).ok())
+        .collect();
     let tagged_cbor_shares: Vec<CBOR> = cbor_data_shares
         .into_iter().map(CBOR::try_from_data)
         .collect::<Result<Vec<_>>>()?;
@@ -139,7 +141,7 @@ fn parse_bytewords(input: &str, style: bytewords::Style) -> Result<Seed> {
 
 fn parse_ur(input: &str, expected_tag: &Tag, allow_tagged_cbor: bool) -> Result<Seed> {
     let share_strings: Vec<String> = input.split_whitespace().map(|s| s.to_string()).collect();
-    let urs: Vec<UR> = share_strings.iter().map(UR::from_ur_string).collect::<Result<Vec<_>>>()?;
+    let urs: Vec<UR> = share_strings.iter().filter_map(|string| UR::from_ur_string(string).ok()).collect();
     // ensure every UR is of the expected type
     for ur in &urs {
         ur.check_type(expected_tag.name().unwrap())?;
@@ -240,5 +242,45 @@ mod tests {
             ur:crypto-sskr/taadecgomymwbybgaaeconwemnhhcmeotivdpdftknsptyltjntamtmtvs");
         let seed = parse_sskr_seed(input).unwrap();
         assert_eq!(seed.data().to_vec(), hex!("9d347f841a4e2ce6bc886e1aee74d824"));
+    }
+
+    #[test]
+    fn test_whitespace_and_invalid_strings() {
+        let input = indoc!("
+            foobar
+            ur:envelope/lftansfwlrhdcebzgtdmuoasfwjnnyiocfwtiorsrnyazeathtsowloxdsamiagssffxvlgsfrbbhelbetvtlowntksgahrygdkissoygsgypkkgrfvlcllofrlantrdwnhddatansfphdcxlultemsglryauraaesnblndnfglbihmsehtbfsehlsroptkgswdyvdpkmyhpwynnoyamtpsotantkphddazslpadadaeayjpeefensrfbznsnnswzswtynsaurbaiewmnesfwlvefhwylksrhfjpnectjzhdgturmkfr
+
+            ur:envelope/lftansfwlrhdcebzgtdmuoasfwjnnyiocfwtiorsrnyazeathtsowloxdsamiagssffxvlgsfrbbhelbetvtlowntksgahrygdkissoygsgypkkgrfvlcllofrlantrdwnhddatansfphdcxlultemsglryauraaesnblndnfglbihmsehtbfsehlsroptkgswdyvdpkmyhpwynnoyamtpsotantkphddazslpadadadkndebdkifwghutmseolfbagltdkodyuevofwbncxhsbegltiskzowljzlkfzuotertatahwk
+        ");
+        let seed = parse_sskr_seed(input).unwrap();
+        assert_eq!(seed.data().to_vec(), hex!("59f2293a5bce7d4de59e71b4207ac5d2"));
+    }
+
+    /// Test fix for [#6](https://github.com/BlockchainCommons/seedtool-cli-rust/issues/6).
+    #[test]
+    fn test_more_than_enough_envelopes_1() {
+        let input = indoc!("
+            from group 1
+            ur:envelope/lftansfwlrhdcebzgtdmuoasfwjnnyiocfwtiorsrnyazeathtsowloxdsamiagssffxvlgsfrbbhelbetvtlowntksgahrygdkissoygsgypkkgrfvlcllofrlantrdwnhddatansfphdcxlultemsglryauraaesnblndnfglbihmsehtbfsehlsroptkgswdyvdpkmyhpwynnoyamtpsotantkphddazslpadadaeayjpeefensrfbznsnnswzswtynsaurbaiewmnesfwlvefhwylksrhfjpnectjzhdgturmkfr
+            ur:envelope/lftansfwlrhdcebzgtdmuoasfwjnnyiocfwtiorsrnyazeathtsowloxdsamiagssffxvlgsfrbbhelbetvtlowntksgahrygdkissoygsgypkkgrfvlcllofrlantrdwnhddatansfphdcxlultemsglryauraaesnblndnfglbihmsehtbfsehlsroptkgswdyvdpkmyhpwynnoyamtpsotantkphddazslpadadadkndebdkifwghutmseolfbagltdkodyuevofwbncxhsbegltiskzowljzlkfzuotertatahwk
+            from group 2 (insufficient)
+            ur:envelope/lftansfwlrhdcebzgtdmuoasfwjnnyiocfwtiorsrnyazeathtsowloxdsamiagssffxvlgsfrbbhelbetvtlowntksgahrygdkissoygsgypkkgrfvlcllofrlantrdwnhddatansfphdcxlultemsglryauraaesnblndnfglbihmsehtbfsehlsroptkgswdyvdpkmyhpwynnoyamtpsotantkphddazslpadbyaedsclwmaocaaemozodmrhgtrycndtspskmyiyrkfeiadkostikepfsekgkklgdlfgsbbtzswk
+        ");
+        let seed = parse_sskr_seed(input).unwrap();
+        assert_eq!(seed.data().to_vec(), hex!("59f2293a5bce7d4de59e71b4207ac5d2"));
+    }
+
+    /// Test fix for [#6](https://github.com/BlockchainCommons/seedtool-cli-rust/issues/6).
+    #[test]
+    fn test_more_than_enough_envelopes_2() {
+        let input = indoc!("
+            from group 2 (insufficient)
+            ur:envelope/lftansfwlrhdcebzgtdmuoasfwjnnyiocfwtiorsrnyazeathtsowloxdsamiagssffxvlgsfrbbhelbetvtlowntksgahrygdkissoygsgypkkgrfvlcllofrlantrdwnhddatansfphdcxlultemsglryauraaesnblndnfglbihmsehtbfsehlsroptkgswdyvdpkmyhpwynnoyamtpsotantkphddazslpadbyaedsclwmaocaaemozodmrhgtrycndtspskmyiyrkfeiadkostikepfsekgkklgdlfgsbbtzswk
+            from group 1
+            ur:envelope/lftansfwlrhdcebzgtdmuoasfwjnnyiocfwtiorsrnyazeathtsowloxdsamiagssffxvlgsfrbbhelbetvtlowntksgahrygdkissoygsgypkkgrfvlcllofrlantrdwnhddatansfphdcxlultemsglryauraaesnblndnfglbihmsehtbfsehlsroptkgswdyvdpkmyhpwynnoyamtpsotantkphddazslpadadaeayjpeefensrfbznsnnswzswtynsaurbaiewmnesfwlvefhwylksrhfjpnectjzhdgturmkfr
+            ur:envelope/lftansfwlrhdcebzgtdmuoasfwjnnyiocfwtiorsrnyazeathtsowloxdsamiagssffxvlgsfrbbhelbetvtlowntksgahrygdkissoygsgypkkgrfvlcllofrlantrdwnhddatansfphdcxlultemsglryauraaesnblndnfglbihmsehtbfsehlsroptkgswdyvdpkmyhpwynnoyamtpsotantkphddazslpadadadkndebdkifwghutmseolfbagltdkodyuevofwbncxhsbegltiskzowljzlkfzuotertatahwk
+        ");
+        let seed = parse_sskr_seed(input).unwrap();
+        assert_eq!(seed.data().to_vec(), hex!("59f2293a5bce7d4de59e71b4207ac5d2"));
     }
 }

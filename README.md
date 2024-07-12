@@ -45,7 +45,9 @@ cargo install --path .
 
 ### 0.1.7: Not Yet Released
 
-- Improved error message for failed SSKR join.
+- #5 Improved error message for failed SSKR join.
+- #6 Fixed bug in SSKR join that caused it to fail for certain valid combinations of shares.
+- Increased robustness of SSKR join by ignoring invalid shares (often blank lines or comments) in input.
 
 ### 0.1.6: July 11, 2024
 
