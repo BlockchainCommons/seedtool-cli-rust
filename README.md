@@ -43,6 +43,10 @@ cargo install --path .
 
 ## Version History
 
+### 0.1.7: Not Yet Released
+
+- Improved error message for failed SSKR join.
+
 ### 0.1.6: July 11, 2024
 
 - The formats `base6`, `base10`, `bits`, `cards`, `dice`, and `ints`, are intended to be used as user-provided input entropy for generating seeds. `seedtool` can use them as input to generate a seed in any of the other formats, or it can generate these directly using the `random` input mode (which you only would need to do when simulating user-generated entropy). However, `seedtool` will now return an error if any of these formats are used for output with anything other than `random` input (the default). This means it will also return an error if asked to convert between these entropy input formats, for example, from `bits` to `dice`, as these are not reversible conversions.
