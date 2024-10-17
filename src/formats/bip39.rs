@@ -10,7 +10,7 @@ impl Format for Bip39Format {
     fn name(&self) -> &str {
         "bip39"
     }
-    
+
     fn round_trippable(&self) -> bool {
         true
     }
@@ -27,7 +27,7 @@ impl InputFormat for Bip39Format {
 impl OutputFormat for Bip39Format {
     fn process_output(&self, state: Cli) -> Result<String> {
         let mnemonic = Mnemonic::from_entropy(state.expect_seed().data())?;
-        let words = mnemonic.word_iter().collect::<Vec<&str>>().join(" ");
+        let words = mnemonic.words().collect::<Vec<&str>>().join(" ");
         Ok(words)
     }
 }
