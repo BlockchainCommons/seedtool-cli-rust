@@ -90,7 +90,7 @@ fn make_shares(spec: &sskr::Spec, seed: &Seed) -> Result<Vec<SSKRShare>> {
 
 fn make_bytewords_shares(spec: &sskr::Spec, seed: &Seed, style: bytewords::Style) -> Result<String> {
     let shares = make_shares(spec, seed).unwrap();
-    let cbor_shares = shares.iter().map(|share| CBOR::to_tagged_value(tags::SSKR_SHARE, CBOR::to_byte_string(share.data()))).collect::<Vec<_>>();
+    let cbor_shares = shares.iter().map(|share| CBOR::to_tagged_value(tags::TAG_SSKR_SHARE, CBOR::to_byte_string(share.data()))).collect::<Vec<_>>();
     let shares_strings = cbor_shares.iter().map(|share| bytewords::encode(share.to_cbor_data(), style)).collect::<Vec<_>>();
     Ok(shares_strings.join("\n"))
 }
@@ -119,7 +119,7 @@ fn from_untagged_cbor_shares(untagged_cbor_shares: Vec<CBOR>) -> Result<Seed> {
 
 fn from_tagged_cbor_shares(tagged_cbor_shares: Vec<CBOR>) -> Result<Seed> {
     let untagged_cbor_shares: Vec<CBOR> = tagged_cbor_shares
-        .into_iter().map(|cbor| cbor.try_into_expected_tagged_value(tags::SSKR_SHARE))
+        .into_iter().map(|cbor| cbor.try_into_expected_tagged_value(tags::TAG_SSKR_SHARE))
         .collect::<Result<Vec<_>>>()?;
     from_untagged_cbor_shares(untagged_cbor_shares)
 }
@@ -139,7 +139,10 @@ fn parse_bytewords(input: &str, style: bytewords::Style) -> Result<Seed> {
     from_tagged_cbor_shares(tagged_cbor_shares)
 }
 
-fn parse_ur(input: &str, expected_tag: &Tag, allow_tagged_cbor: bool) -> Result<Seed> {
+fn parse_ur(input: &str, expected_tag_value: TagValue, allow_tagged_cbor: bool) -> Result<Seed> {
+    let expected_tag = with_tags!(|tags: &TagsStore| {
+        tags.tag_for_value(expected_tag_value).unwrap()
+    });
     let share_strings: Vec<String> = input.split_whitespace().map(|s| s.to_string()).collect();
     let urs: Vec<UR> = share_strings.iter().filter_map(|string| UR::from_ur_string(string).ok()).collect();
     // ensure every UR is of the expected type
@@ -176,11 +179,11 @@ fn parse_sskr_seed(input: &str) -> Result<Seed> {
         return Ok(seed);
     }
 
-    if let Ok(seed) = parse_ur(input, &tags::SSKR_SHARE, false) {
+    if let Ok(seed) = parse_ur(input, tags::TAG_SSKR_SHARE, false) {
         return Ok(seed);
     }
 
-    if let Ok(seed) = parse_ur(input, &tags::SSKR_SHARE_V1, true) {
+    if let Ok(seed) = parse_ur(input, tags::TAG_SSKR_SHARE_V1, true) {
         return Ok(seed);
     }
 
@@ -235,6 +238,8 @@ mod tests {
 
     #[test]
     fn test_legacy() {
+        bc_envelope::register_tags();
+
         let input = indoc!("ur:crypto-sskr/taadecgomymwbyadaenndtrehegwjkktoljphehtkshhbnhgiofmsebabs
             ur:crypto-sskr/taadecgomymwbyadaobthhluwlfsishthsnngapdckhytpoteeeeglwfcm
             ur:crypto-sskr/taadecgomymwbybgaekiplylurmhglfsgtfeptwnlrknvwidbztbjlhfht
@@ -246,6 +251,8 @@ mod tests {
 
     #[test]
     fn test_whitespace_and_invalid_strings() {
+        bc_envelope::register_tags();
+        
         let input = indoc!("
             foobar
             ur:envelope/lftansfwlrhdcebzgtdmuoasfwjnnyiocfwtiorsrnyazeathtsowloxdsamiagssffxvlgsfrbbhelbetvtlowntksgahrygdkissoygsgypkkgrfvlcllofrlantrdwnhddatansfphdcxlultemsglryauraaesnblndnfglbihmsehtbfsehlsroptkgswdyvdpkmyhpwynnoyamtpsotantkphddazslpadadaeayjpeefensrfbznsnnswzswtynsaurbaiewmnesfwlvefhwylksrhfjpnectjzhdgturmkfr
@@ -259,6 +266,8 @@ mod tests {
     /// Test fix for [#6](https://github.com/BlockchainCommons/seedtool-cli-rust/issues/6).
     #[test]
     fn test_more_than_enough_envelopes_1() {
+        bc_envelope::register_tags();
+
         let input = indoc!("
             from group 1
             ur:envelope/lftansfwlrhdcebzgtdmuoasfwjnnyiocfwtiorsrnyazeathtsowloxdsamiagssffxvlgsfrbbhelbetvtlowntksgahrygdkissoygsgypkkgrfvlcllofrlantrdwnhddatansfphdcxlultemsglryauraaesnblndnfglbihmsehtbfsehlsroptkgswdyvdpkmyhpwynnoyamtpsotantkphddazslpadadaeayjpeefensrfbznsnnswzswtynsaurbaiewmnesfwlvefhwylksrhfjpnectjzhdgturmkfr
@@ -273,6 +282,8 @@ mod tests {
     /// Test fix for [#6](https://github.com/BlockchainCommons/seedtool-cli-rust/issues/6).
     #[test]
     fn test_more_than_enough_envelopes_2() {
+        bc_envelope::register_tags();
+
         let input = indoc!("
             from group 2 (insufficient)
             ur:envelope/lftansfwlrhdcebzgtdmuoasfwjnnyiocfwtiorsrnyazeathtsowloxdsamiagssffxvlgsfrbbhelbetvtlowntksgahrygdkissoygsgypkkgrfvlcllofrlantrdwnhddatansfphdcxlultemsglryauraaesnblndnfglbihmsehtbfsehlsroptkgswdyvdpkmyhpwynnoyamtpsotantkphddazslpadbyaedsclwmaocaaemozodmrhgtrycndtspskmyiyrkfeiadkostikepfsekgkklgdlfgsbbtzswk

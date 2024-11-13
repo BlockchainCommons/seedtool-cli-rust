@@ -64,7 +64,7 @@ impl Seed {
 
 impl CBORTagged for Seed {
     fn cbor_tags() -> Vec<Tag> {
-        vec![tags::SEED]
+        tags_for_values(&[tags::TAG_SEED])
     }
 }
 

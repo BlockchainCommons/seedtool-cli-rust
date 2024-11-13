@@ -23,6 +23,8 @@ fn test_seed_2() -> Result<()> {
 
 #[test]
 fn test_formats() -> Result<()> {
+    bc_envelope::register_tags();
+    
     let hex = "9d347f841a4e2ce6bc886e1aee74d824";
 
     // Most format types are not round-trippable

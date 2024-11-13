@@ -25,6 +25,8 @@ use random::DeterministicRandomNumberGenerator;
 
 #[doc(hidden)]
 fn main() -> Result<()> {
+    bc_envelope::register_tags();
+    
     let mut cli = Cli::parse();
     //println!("{:?}", cli);
 
