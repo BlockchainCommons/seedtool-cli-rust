@@ -620,7 +620,7 @@ This results in:
 ```
 ENCRYPTED [
     'note': "This is encrypted with the July 2, 2024 sym key created on erzo."
-    'verifiedBy': Signature
+    'signed': Signature
 ]
 ```
 Again, remember that every assertion (which, yes, also includes a signature) is applied to a subject, so in this example, the signing key is applied to the Encrypted envelope of the seed. Which might be what you want.
@@ -642,7 +642,7 @@ $ echo $SIGNED_SEED | envelope format
         'note': "This is encrypted with the July 2, 2024 sym key created on erzo."
     ]
 } [
-    'verifiedBy': Signature
+    'signed': Signature
 ]
 ```
 Once signed with a private key, an Envelope's signature can be verified with the corresponding public key:
@@ -710,7 +710,7 @@ ENCRYPTED [
         'conformsTo': "https://joe-bob-s.com/cheap-attachments.html"
         'vendor': "com.joe-bob-s"
     ]
-    'verifiedBy': Signature
+    'signed': Signature
 ]
 ```
 
