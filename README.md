@@ -43,6 +43,10 @@ cargo install --path .
 
 ## Version History
 
+### 0.1.8: December 8, 2024
+
+- Minor fixes.
+
 ### 0.1.7: October 16, 2024
 
 - #5 Improved error message for failed SSKR join.
