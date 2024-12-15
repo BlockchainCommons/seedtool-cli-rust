@@ -72,7 +72,7 @@ $ envelope format ur:envelope/lptpsogddezsdmjosscylolpettysbeetkjsrykpoyadcsspoy
 Bytes(16) [
     'isA': 'Seed'
     'date': 2024-07-01
-    'hasName': "My Seed"
+    'name': "My Seed"
     'note': "This is a note"
 ]
 ```

@@ -24,7 +24,7 @@ fn test_seed_2() -> Result<()> {
 #[test]
 fn test_formats() -> Result<()> {
     bc_envelope::register_tags();
-    
+
     let hex = "9d347f841a4e2ce6bc886e1aee74d824";
 
     // Most format types are not round-trippable
@@ -132,7 +132,7 @@ fn test_envelope() -> Result<()> {
     Bytes(16) [
         'isA': 'Seed'
         'date': 2024-06-15T01:02:00Z
-        'hasName': "Dark Purple Aqua Love"
+        'name': "Dark Purple Aqua Love"
         'note': "This is the note"
     ]
     "#

@@ -120,7 +120,7 @@ impl From<Seed> for Envelope {
             .add_optional_assertion(known_values::DATE, seed.creation_date().cloned());
 
         if !seed.name().is_empty() {
-            e = e.add_assertion(known_values::HAS_NAME, seed.name());
+            e = e.add_assertion(known_values::NAME, seed.name());
         }
 
         if !seed.note().is_empty() {
@@ -137,7 +137,7 @@ impl TryFrom<Envelope> for Seed {
     fn try_from(envelope: Envelope) -> Result<Self> {
         envelope.check_type(&known_values::SEED_TYPE)?;
         let data = envelope.subject().try_leaf()?.try_into_byte_string()?.to_vec();
-        let name = envelope.extract_optional_object_for_predicate::<String>(known_values::HAS_NAME)?.unwrap_or_default().to_string();
+        let name = envelope.extract_optional_object_for_predicate::<String>(known_values::NAME)?.unwrap_or_default().to_string();
         let note = envelope.extract_optional_object_for_predicate::<String>(known_values::NOTE)?.unwrap_or_default().to_string();
         let creation_date = envelope.extract_optional_object_for_predicate::<dcbor::Date>(known_values::DATE)?.map(|s| s.as_ref().clone());
         Ok(Self::new_opt(data, name, note, creation_date))

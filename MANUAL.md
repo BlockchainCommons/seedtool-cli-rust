@@ -396,7 +396,7 @@ envelope format ur:envelope/lptpsogdnewfoxdskotbemhymofsuojefmfdhlryoyadcsspoybd
 Bytes(16) [
     'isA': 'Seed'
     'date': 2024-07-03T00:38:20Z
-    'hasName': "Blockchain Commons petty cash"
+    'name': "Blockchain Commons petty cash"
     'note': "Meant to hold no more than $500, for payment of minor costs"
 ]
 ```
@@ -531,7 +531,7 @@ $ envelope format $ENVSEED
 Bytes(16) [
     'isA': 'Seed'
     'date': 2024-07-02T22:42:54Z
-    'hasName': "Blockchain Commons 128-Bit Default Seed"
+    'name': "Blockchain Commons 128-Bit Default Seed"
     'note': "This is the 128-bit example key for Blockchain Commons. Do not use it for real funds!"
 ]
 ```
@@ -559,7 +559,7 @@ Because assertions (which includes encryption) are applied to a subject, this mo
 ENCRYPTED [
     'isA': 'Seed'
     'date': 2024-07-02T22:42:54Z
-    'hasName': "Blockchain Commons 128-Bit Default Seed"
+    'name': "Blockchain Commons 128-Bit Default Seed"
     'note': "This is the 128-bit example key for Blockchain Commons. Do not use it for real funds!"
 ]
 ```
