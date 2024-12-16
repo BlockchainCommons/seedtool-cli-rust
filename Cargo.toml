@@ -1,6 +1,6 @@
 [package]
 name = "seedtool-cli"
-version = "0.1.8"
+version = "0.1.9"
 edition = "2021"
 description = "A command-line tool for generating and transforming cryptographic seeds."
 authors = ["Blockchain Commons"]
@@ -18,7 +18,7 @@ path = "src/main.rs"
 [dependencies]
 dcbor = "^0.16.0"
 bc-ur = "^0.6.0"
-bc-envelope = "^0.19.0"
+bc-envelope = "^0.20.0"
 bc-components = "^0.14.0"
 bc-rand = "^0.2.0"
 bc-crypto = "^0.5.0"
