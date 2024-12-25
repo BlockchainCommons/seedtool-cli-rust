@@ -43,6 +43,10 @@ cargo install --path .
 
 ## Version History
 
+### 0.1.10: December 24, 2024
+
+- Aligned dependencies to latest versions.
+
 ### 0.1.9: December 15, 2024
 
 - Aligned dependencies to latest versions.
