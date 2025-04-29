@@ -124,56 +124,55 @@ fn test_envelope() -> Result<()> {
 
     let envelope = Envelope::from_ur_string(renamed)?;
     // println!("{}", envelope.format());
-    assert_eq!(
-        envelope.format(),
-        (
-            indoc! {
-                r#"
-    Bytes(16) [
-        'isA': 'Seed'
-        'date': 2024-06-15T01:02:00Z
-        'name': "Dark Purple Aqua Love"
-        'note': "This is the note"
-    ]
-    "#
-            }
-        ).trim()
-    );
+    #[rustfmt::skip]
+    assert_eq!(envelope.format(), (indoc! {r#"
+        Bytes(16) [
+            'isA': 'Seed'
+            'date': 2024-06-15T01:02:00Z
+            'name': "Dark Purple Aqua Love"
+            'note': "This is the note"
+        ]
+    "#}).trim());
 
     Ok(())
 }
 
 #[test]
 fn test_sskr() -> Result<()> {
-    let seed_envelope = run_cli(&[
-        "--name", "SeedName",
-        "--note", "This is the note",
-        "--date", "now",
-        "--out", "envelope",
-    ])?;
-    let share_strings: Vec<String> = run_cli(&[
-        "--in", "envelope",
-        "--out", "sskr",
-        "--group-threshold", "2",
-        "--groups", "2-of-3", "3-of-5",
-        "--",
-        &seed_envelope
-    ])?.split_whitespace().map(|s| s.to_string()).collect();
+    let seed_envelope = run_cli(
+        &["--name", "SeedName", "--note", "This is the note", "--date", "now", "--out", "envelope"]
+    )?;
+    let share_strings: Vec<String> = run_cli(
+        &[
+            "--in",
+            "envelope",
+            "--out",
+            "sskr",
+            "--group-threshold",
+            "2",
+            "--groups",
+            "2-of-3",
+            "3-of-5",
+            "--",
+            &seed_envelope,
+        ]
+    )?
+        .split_whitespace()
+        .map(|s| s.to_string())
+        .collect();
 
     let selected_indexes: Vec<usize> = vec![0, 2, 3, 5, 7];
-    let selected_share_strings: Vec<String> = share_strings.iter().enumerate().filter_map(|(i, s)| {
-        if selected_indexes.contains(&i) {
-            Some(s.clone())
-        } else {
-            None
-        }
-    }).collect();
+    let selected_share_strings: Vec<String> = share_strings
+        .iter()
+        .enumerate()
+        .filter_map(|(i, s)| {
+            if selected_indexes.contains(&i) { Some(s.clone()) } else { None }
+        })
+        .collect();
 
-    let restored_envelope_ur_string = run_cli(&[
-        "--in", "sskr",
-        "--out", "envelope",
-        &selected_share_strings.join(" ")
-    ])?;
+    let restored_envelope_ur_string = run_cli(
+        &["--in", "sskr", "--out", "envelope", &selected_share_strings.join(" ")]
+    )?;
 
     let restored_envelope = Envelope::from_ur_string(restored_envelope_ur_string)?;
     assert_eq!(restored_envelope.ur_string(), seed_envelope);
@@ -183,28 +182,42 @@ fn test_sskr() -> Result<()> {
 
 #[test]
 fn test_multipart() -> Result<()> {
-    let seed_envelope = run_cli(&[
-        "--count", "64",
-        "--name", "SeedName",
-        "--note", "This is the note",
-        "--date", "now",
-        "--out", "envelope",
-    ])?;
-    let shares: Vec<String> = run_cli(&[
-        "--in", "envelope",
-        "--out", "multipart",
-        "--max-fragment-len", "20",
-        "--additional-parts", "50",
-        &seed_envelope
-    ])?.split_whitespace().map(|s| s.to_string()).collect();
+    let seed_envelope = run_cli(
+        &[
+            "--count",
+            "64",
+            "--name",
+            "SeedName",
+            "--note",
+            "This is the note",
+            "--date",
+            "now",
+            "--out",
+            "envelope",
+        ]
+    )?;
+    let shares: Vec<String> = run_cli(
+        &[
+            "--in",
+            "envelope",
+            "--out",
+            "multipart",
+            "--max-fragment-len",
+            "20",
+            "--additional-parts",
+            "50",
+            &seed_envelope,
+        ]
+    )?
+        .split_whitespace()
+        .map(|s| s.to_string())
+        .collect();
 
     let selected_shares: Vec<String> = shares.iter().skip(5).cloned().collect();
 
-    let restored_envelope_ur_string = run_cli(&[
-        "--in", "multipart",
-        "--out", "envelope",
-        &selected_shares.join(" ")
-    ])?;
+    let restored_envelope_ur_string = run_cli(
+        &["--in", "multipart", "--out", "envelope", &selected_shares.join(" ")]
+    )?;
 
     let restored_envelope = Envelope::from_ur_string(restored_envelope_ur_string)?;
     assert_eq!(restored_envelope.ur_string(), seed_envelope);

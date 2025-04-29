@@ -1,6 +1,6 @@
 use anyhow::{ Result, bail };
-use bc_ur::prelude::*;
-use bc_envelope::prelude::*;
+use bc_envelope::Envelope;
+use bc_ur::{MultipartDecoder, MultipartEncoder, URDecodable, UREncodable};
 
 use crate::{ cli::Cli, seed::Seed };
 
@@ -47,7 +47,9 @@ impl OutputFormat for MultipartFormat {
         let ur = state.to_envelope().ur();
         let mut encoder = MultipartEncoder::new(&ur, state.max_fragment_len)?;
         let parts_count = encoder.parts_count() + state.additional_parts;
-        let parts = (0..parts_count).map(|_| encoder.next_part()).collect::<Result<Vec<String>>>()?;
+        let parts = (0..parts_count)
+            .map(|_| encoder.next_part().map_err(anyhow::Error::from))
+            .collect::<Result<Vec<String>>>()?;
         Ok(parts.join("\n"))
     }
 }

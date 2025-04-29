@@ -1,7 +1,7 @@
-use anyhow::{bail, Error, Result};
+use anyhow::{Error, Result};
 use bc_components::tags;
-use bc_ur::prelude::*;
-use bc_envelope::prelude::*;
+use bc_envelope::{known_values, Envelope};
+use dcbor::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Seed {
@@ -92,19 +92,19 @@ impl CBORTaggedEncodable for Seed {
 }
 
 impl TryFrom<CBOR> for Seed {
-    type Error = Error;
+    type Error = dcbor::Error;
 
-    fn try_from(cbor: CBOR) -> Result<Self> {
+    fn try_from(cbor: CBOR) -> dcbor::Result<Self> {
         Self::from_tagged_cbor(cbor)
     }
 }
 
 impl CBORTaggedDecodable for Seed {
-    fn from_untagged_cbor(cbor: CBOR) -> Result<Self> {
+    fn from_untagged_cbor(cbor: CBOR) -> dcbor::Result<Self> {
         let map = cbor.try_into_map()?;
         let data = map.extract::<i32, CBOR>(1)?.try_into_byte_string()?.to_vec();
         if data.is_empty() {
-            bail!("invalid seed data");
+            return Err("invalid seed data".into());
         }
         let creation_date = map.get::<i32, dcbor::Date>(2);
         let name = map.get::<i32, String>(3).unwrap_or_default();
