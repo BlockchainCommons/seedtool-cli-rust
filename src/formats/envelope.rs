@@ -1,19 +1,15 @@
-use crate::{cli::Cli, seed::Seed};
 use anyhow::Result;
 use bc_envelope::prelude::*;
 
-use super::{ Format, InputFormat, OutputFormat };
+use super::{Format, InputFormat, OutputFormat};
+use crate::{cli::Cli, seed::Seed};
 
 pub struct EnvelopeFormat;
 
 impl Format for EnvelopeFormat {
-    fn name(&self) -> &str {
-        "envelope"
-    }
+    fn name(&self) -> &str { "envelope" }
 
-    fn round_trippable(&self) -> bool {
-        true
-    }
+    fn round_trippable(&self) -> bool { true }
 }
 
 impl InputFormat for EnvelopeFormat {

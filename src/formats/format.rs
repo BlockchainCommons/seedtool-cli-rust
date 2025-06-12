@@ -1,24 +1,13 @@
-use clap::ValueEnum;
 use anyhow::Result;
-use crate::cli::Cli;
+use clap::ValueEnum;
 
 use super::{
-    RandomFormat,
-    HexFormat,
-    BytewordsStandardFormat,
-    BytewordsUriFormat,
-    BytewordsMinimalFormat,
-    BitsFormat,
-    CardsFormat,
-    DiceFormat,
-    Base6Format,
-    Base10Format,
-    IntsFormat,
-    Bip39Format,
+    Base6Format, Base10Format, Bip39Format, BitsFormat, BytewordsMinimalFormat,
+    BytewordsStandardFormat, BytewordsUriFormat, CardsFormat, DiceFormat,
+    EnvelopeFormat, HexFormat, IntsFormat, MultipartFormat, RandomFormat,
     SSKRFormat,
-    EnvelopeFormat,
-    MultipartFormat,
 };
+use crate::cli::Cli;
 
 pub trait Format {
     fn name(&self) -> &str;
@@ -52,7 +41,9 @@ pub enum InputFormatKey {
     Multipart,
 }
 
-pub fn select_input_format(input_format: InputFormatKey) -> Box<dyn InputFormat> {
+pub fn select_input_format(
+    input_format: InputFormatKey,
+) -> Box<dyn InputFormat> {
     match input_format {
         InputFormatKey::Random => Box::new(RandomFormat),
         InputFormatKey::Hex => Box::new(HexFormat),
@@ -90,7 +81,9 @@ pub enum OutputFormatKey {
     Multipart,
 }
 
-pub fn select_output_format(output_format: OutputFormatKey) -> Box<dyn OutputFormat> {
+pub fn select_output_format(
+    output_format: OutputFormatKey,
+) -> Box<dyn OutputFormat> {
     match output_format {
         OutputFormatKey::Hex => Box::new(HexFormat),
         OutputFormatKey::Btw => Box::new(BytewordsStandardFormat),

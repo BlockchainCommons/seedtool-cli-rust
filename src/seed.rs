@@ -1,6 +1,6 @@
 use anyhow::{Error, Result};
 use bc_components::tags;
-use bc_envelope::{known_values, Envelope};
+use bc_envelope::{Envelope, known_values};
 use dcbor::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -19,7 +19,12 @@ impl Seed {
         Self::new_opt(data, String::new(), String::new(), None)
     }
 
-    pub fn new_opt<T, S, U>(data: T, name: S, note: U, creation_date: Option<dcbor::Date>) -> Self
+    pub fn new_opt<T, S, U>(
+        data: T,
+        name: S,
+        note: U,
+        creation_date: Option<dcbor::Date>,
+    ) -> Self
     where
         T: AsRef<[u8]>,
         S: AsRef<str>,
@@ -33,21 +38,15 @@ impl Seed {
         }
     }
 
-    pub fn data(&self) -> &Vec<u8> {
-        &self.data
-    }
+    pub fn data(&self) -> &[u8] { &self.data }
 
-    pub fn name(&self) -> &str {
-        &self.name
-    }
+    pub fn name(&self) -> &str { &self.name }
 
     pub fn set_name(&mut self, name: impl AsRef<str>) {
         self.name = name.as_ref().to_string();
     }
 
-    pub fn note(&self) -> &str {
-        &self.note
-    }
+    pub fn note(&self) -> &str { &self.note }
 
     pub fn set_note(&mut self, note: impl AsRef<str>) {
         self.note = note.as_ref().to_string();
@@ -57,21 +56,20 @@ impl Seed {
         self.creation_date.as_ref()
     }
 
-    pub fn set_creation_date(&mut self, creation_date: Option<impl AsRef<dcbor::Date>>) {
+    pub fn set_creation_date(
+        &mut self,
+        creation_date: Option<impl AsRef<dcbor::Date>>,
+    ) {
         self.creation_date = creation_date.map(|s| s.as_ref().clone());
     }
 }
 
 impl CBORTagged for Seed {
-    fn cbor_tags() -> Vec<Tag> {
-        tags_for_values(&[tags::TAG_SEED])
-    }
+    fn cbor_tags() -> Vec<Tag> { tags_for_values(&[tags::TAG_SEED]) }
 }
 
 impl From<Seed> for CBOR {
-    fn from(value: Seed) -> Self {
-        value.tagged_cbor()
-    }
+    fn from(value: Seed) -> Self { value.tagged_cbor() }
 }
 
 impl CBORTaggedEncodable for Seed {
@@ -102,7 +100,10 @@ impl TryFrom<CBOR> for Seed {
 impl CBORTaggedDecodable for Seed {
     fn from_untagged_cbor(cbor: CBOR) -> dcbor::Result<Self> {
         let map = cbor.try_into_map()?;
-        let data = map.extract::<i32, CBOR>(1)?.try_into_byte_string()?.to_vec();
+        let data = map
+            .extract::<i32, CBOR>(1)?
+            .try_into_byte_string()?
+            .to_vec();
         if data.is_empty() {
             return Err("invalid seed data".into());
         }
@@ -117,7 +118,10 @@ impl From<Seed> for Envelope {
     fn from(seed: Seed) -> Self {
         let mut e = Envelope::new(CBOR::to_byte_string(seed.data()))
             .add_type(known_values::SEED_TYPE)
-            .add_optional_assertion(known_values::DATE, seed.creation_date().cloned());
+            .add_optional_assertion(
+                known_values::DATE,
+                seed.creation_date().cloned(),
+            );
 
         if !seed.name().is_empty() {
             e = e.add_assertion(known_values::NAME, seed.name());
@@ -136,10 +140,28 @@ impl TryFrom<Envelope> for Seed {
 
     fn try_from(envelope: Envelope) -> Result<Self> {
         envelope.check_type(&known_values::SEED_TYPE)?;
-        let data = envelope.subject().try_leaf()?.try_into_byte_string()?.to_vec();
-        let name = envelope.extract_optional_object_for_predicate::<String>(known_values::NAME)?.unwrap_or_default().to_string();
-        let note = envelope.extract_optional_object_for_predicate::<String>(known_values::NOTE)?.unwrap_or_default().to_string();
-        let creation_date = envelope.extract_optional_object_for_predicate::<dcbor::Date>(known_values::DATE)?.map(|s| s.as_ref().clone());
+        let data = envelope
+            .subject()
+            .try_leaf()?
+            .try_into_byte_string()?
+            .to_vec();
+        let name = envelope
+            .extract_optional_object_for_predicate::<String>(
+                known_values::NAME,
+            )?
+            .unwrap_or_default()
+            .to_string();
+        let note = envelope
+            .extract_optional_object_for_predicate::<String>(
+                known_values::NOTE,
+            )?
+            .unwrap_or_default()
+            .to_string();
+        let creation_date = envelope
+            .extract_optional_object_for_predicate::<dcbor::Date>(
+                known_values::DATE,
+            )?
+            .map(|s| s.as_ref().clone());
         Ok(Self::new_opt(data, name, note, creation_date))
     }
 }

@@ -1,14 +1,10 @@
 #![allow(dead_code)]
 
-use anyhow::{ bail, Result };
+use anyhow::{Result, bail};
 
-pub fn data_to_hex(bytes: &[u8]) -> String {
-    hex::encode(bytes)
-}
+pub fn data_to_hex(bytes: &[u8]) -> String { hex::encode(bytes) }
 
-pub fn hex_to_data(hex: &str) -> Result<Vec<u8>> {
-    Ok(hex::decode(hex)?)
-}
+pub fn hex_to_data(hex: &str) -> Result<Vec<u8>> { Ok(hex::decode(hex)?) }
 
 pub fn data_to_base(buf: &[u8], base: usize) -> Vec<u8> {
     buf.iter()
@@ -16,11 +12,13 @@ pub fn data_to_base(buf: &[u8], base: usize) -> Vec<u8> {
         .collect()
 }
 
-pub fn data_to_alphabet(buf: &[u8], base: usize, to_alphabet: fn(usize) -> String) -> String {
+pub fn data_to_alphabet(
+    buf: &[u8],
+    base: usize,
+    to_alphabet: fn(usize) -> String,
+) -> String {
     let data = data_to_base(buf, base);
-    data.iter()
-        .map(|b| to_alphabet((*b).into()))
-        .collect()
+    data.iter().map(|b| to_alphabet((*b).into())).collect()
 }
 
 pub fn parse_ints(input: &str) -> Result<Vec<u8>> {
@@ -35,8 +33,12 @@ pub fn parse_ints(input: &str) -> Result<Vec<u8>> {
     Ok(result)
 }
 
-
-pub fn data_to_ints(buf: &[u8], low: usize, high: usize, separator: &str) -> Result<String> {
+pub fn data_to_ints(
+    buf: &[u8],
+    low: usize,
+    high: usize,
+    separator: &str,
+) -> Result<String> {
     if !(low < high && high <= 255) {
         bail!("Int conversion range must be in 0 <= low < high <= 255.");
     }
@@ -50,7 +52,11 @@ pub fn data_to_ints(buf: &[u8], low: usize, high: usize, separator: &str) -> Res
     Ok(result)
 }
 
-pub fn digits_to_data(in_str: &str, low: usize, high: usize) -> Result<Vec<u8>> {
+pub fn digits_to_data(
+    in_str: &str,
+    low: usize,
+    high: usize,
+) -> Result<Vec<u8>> {
     let mut result = Vec::new();
     for c in in_str.chars() {
         let n = (c as i32) - ('0' as i32);

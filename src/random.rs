@@ -1,5 +1,8 @@
-use bc_crypto::{ hash::{ sha256, hkdf_hmac_sha256 }, SHA256_SIZE };
 use anyhow::Result;
+use bc_crypto::{
+    SHA256_SIZE,
+    hash::{hkdf_hmac_sha256, sha256},
+};
 
 #[derive(Debug, Clone)]
 pub struct DeterministicRandomNumberGenerator {
@@ -8,9 +11,7 @@ pub struct DeterministicRandomNumberGenerator {
 }
 
 impl DeterministicRandomNumberGenerator {
-    pub fn new(seed: [u8; SHA256_SIZE]) -> Self {
-        Self { seed, salt: 0 }
-    }
+    pub fn new(seed: [u8; SHA256_SIZE]) -> Self { Self { seed, salt: 0 } }
 
     pub fn new_with_seed(seed: &str) -> Self {
         let seed = sha256(seed.as_bytes());
@@ -25,7 +26,10 @@ impl DeterministicRandomNumberGenerator {
     }
 }
 
-pub fn sha256_deterministic_random(entropy: &[u8], n: usize) -> Result<Vec<u8>> {
+pub fn sha256_deterministic_random(
+    entropy: &[u8],
+    n: usize,
+) -> Result<Vec<u8>> {
     let seed = sha256(entropy);
     if n <= seed.len() {
         Ok(seed[..n].to_vec())
@@ -34,7 +38,10 @@ pub fn sha256_deterministic_random(entropy: &[u8], n: usize) -> Result<Vec<u8>> 
     }
 }
 
-pub fn sha256_deterministic_random_string(string: &str, n: usize) -> Result<Vec<u8>> {
+pub fn sha256_deterministic_random_string(
+    string: &str,
+    n: usize,
+) -> Result<Vec<u8>> {
     let entropy = string.as_bytes();
     sha256_deterministic_random(entropy, n)
 }

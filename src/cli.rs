@@ -1,22 +1,22 @@
-use std::io::{ self, Read };
-use bc_rand::{ RandomNumberGenerator, SecureRandomNumberGenerator };
+use std::io::{self, Read};
+
+use anyhow::Result;
+use bc_components::{SSKRGroupSpec, SSKRSpec};
+use bc_envelope::prelude::*;
+use bc_rand::{RandomNumberGenerator, SecureRandomNumberGenerator};
 use clap::Parser;
 use clap_num::number_range;
-use anyhow::Result;
-use bc_envelope::prelude::*;
-use bc_components::{ SSKRSpec, SSKRGroupSpec };
-use crate::formats::{ InputFormatKey, OutputFormatKey, SSKRFormatKey };
-use crate::random::DeterministicRandomNumberGenerator;
-use crate::seed::Seed;
-use crate::styles;
 
-fn parse_low_int(s: &str) -> Result<usize, String> {
-    number_range(s, 0, 254)
-}
+use crate::{
+    formats::{InputFormatKey, OutputFormatKey, SSKRFormatKey},
+    random::DeterministicRandomNumberGenerator,
+    seed::Seed,
+    styles,
+};
 
-fn parse_high_int(s: &str) -> Result<usize, String> {
-    number_range(s, 1, 255)
-}
+fn parse_low_int(s: &str) -> Result<usize, String> { number_range(s, 0, 254) }
+
+fn parse_high_int(s: &str) -> Result<usize, String> { number_range(s, 1, 255) }
 
 pub fn parse_group_threshold(s: &str) -> Result<usize, String> {
     number_range(s, 1, 16)
@@ -52,7 +52,8 @@ pub struct Cli {
     pub count: usize,
 
     /// The input format.
-    /// If not specified, a new random seed is generated using a secure random number generator.
+    /// If not specified, a new random seed is generated using a secure random
+    /// number generator.
     #[arg(
         value_enum,
         short,
@@ -106,7 +107,8 @@ pub struct Cli {
     #[clap(value_parser = parse_date)]
     pub date: Option<dcbor::Date>,
 
-    /// For `multipart` output, the UR will be segmented into parts with fragments no larger than MAX_FRAG_LEN
+    /// For `multipart` output, the UR will be segmented into parts with
+    /// fragments no larger than MAX_FRAG_LEN
     #[arg(
         help_heading = Some("Multipart Encoding"),
         long,
@@ -115,7 +117,8 @@ pub struct Cli {
     )]
     pub max_fragment_len: usize,
 
-    /// For `multipart` output, the number of additional parts above the minimum to generate using fountain encoding.
+    /// For `multipart` output, the number of additional parts above the
+    /// minimum to generate using fountain encoding.
     #[arg(
         help_heading = Some("Multipart Encoding"),
         long,
@@ -203,7 +206,9 @@ impl Cli {
     pub fn random_data(&mut self, size: usize) -> Vec<u8> {
         match &mut self.rng {
             Some(RngSource::Secure(rng)) => rng.random_data(size),
-            Some(RngSource::Deterministic(rng)) => rng.deterministic_random_data(size),
+            Some(RngSource::Deterministic(rng)) => {
+                rng.deterministic_random_data(size)
+            }
             None => panic!("RNG not initialized"),
         }
     }

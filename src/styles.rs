@@ -1,4 +1,4 @@
-use anstyle::{ AnsiColor, Color, Style };
+use anstyle::{AnsiColor, Color, Style};
 use clap::builder::Styles;
 
 pub fn get_styles() -> Styles {
@@ -7,30 +7,32 @@ pub fn get_styles() -> Styles {
             Style::new()
                 .bold()
                 .underline()
-                .fg_color(Some(Color::Ansi(AnsiColor::Yellow)))
+                .fg_color(Some(Color::Ansi(AnsiColor::Yellow))),
         )
         .header(
             Style::new()
                 .bold()
                 .underline()
-                .fg_color(Some(Color::Ansi(AnsiColor::Yellow)))
+                .fg_color(Some(Color::Ansi(AnsiColor::Yellow))),
         )
         .literal(Style::new().fg_color(Some(Color::Ansi(AnsiColor::Green))))
         .invalid(
             Style::new()
                 .bold()
-                .fg_color(Some(Color::Ansi(AnsiColor::Red)))
+                .fg_color(Some(Color::Ansi(AnsiColor::Red))),
         )
         .error(
             Style::new()
                 .bold()
-                .fg_color(Some(Color::Ansi(AnsiColor::Red)))
+                .fg_color(Some(Color::Ansi(AnsiColor::Red))),
         )
         .valid(
             Style::new()
                 .bold()
                 .underline()
-                .fg_color(Some(Color::Ansi(AnsiColor::Green)))
+                .fg_color(Some(Color::Ansi(AnsiColor::Green))),
         )
-        .placeholder(Style::new().fg_color(Some(Color::Ansi(AnsiColor::BrightCyan))))
+        .placeholder(
+            Style::new().fg_color(Some(Color::Ansi(AnsiColor::BrightCyan))),
+        )
 }

@@ -1,18 +1,16 @@
-use crate::{ cli::Cli, random::deterministic_random, seed::Seed, util::data_to_alphabet };
-use anyhow::{ Result, bail };
+use anyhow::{Result, bail};
 
-use super::{ Format, InputFormat, OutputFormat };
+use super::{Format, InputFormat, OutputFormat};
+use crate::{
+    cli::Cli, random::deterministic_random, seed::Seed, util::data_to_alphabet,
+};
 
 pub struct CardsFormat;
 
 impl Format for CardsFormat {
-    fn name(&self) -> &str {
-        "cards"
-    }
+    fn name(&self) -> &str { "cards" }
 
-    fn round_trippable(&self) -> bool {
-        false
-    }
+    fn round_trippable(&self) -> bool { false }
 }
 
 impl InputFormat for CardsFormat {
@@ -63,18 +61,8 @@ pub fn cards_to_data(cards: &str) -> Result<Vec<u8>> {
     let count = len / 2;
     let mut result = Vec::with_capacity(count);
     for i in 0..count {
-        let rank = parse_rank(
-            cards
-                .chars()
-                .nth(i * 2)
-                .unwrap()
-        )?;
-        let suit = parse_suit(
-            cards
-                .chars()
-                .nth(i * 2 + 1)
-                .unwrap()
-        )?;
+        let rank = parse_rank(cards.chars().nth(i * 2).unwrap())?;
+        let suit = parse_suit(cards.chars().nth(i * 2 + 1).unwrap())?;
         let n = suit * 13 + rank;
         result.push(n as u8);
     }

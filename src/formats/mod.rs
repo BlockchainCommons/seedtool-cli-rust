@@ -1,12 +1,7 @@
 mod format;
 pub use format::{
-    Format,
-    InputFormat,
-    OutputFormat,
-    InputFormatKey,
-    OutputFormatKey,
-    select_input_format,
-    select_output_format,
+    Format, InputFormat, InputFormatKey, OutputFormat, OutputFormatKey,
+    select_input_format, select_output_format,
 };
 mod base6;
 pub use base6::Base6Format;

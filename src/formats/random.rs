@@ -1,19 +1,14 @@
 use anyhow::Result;
 
-use crate::{ cli::Cli, seed::Seed };
-
-use super::{ Format, InputFormat };
+use super::{Format, InputFormat};
+use crate::{cli::Cli, seed::Seed};
 
 pub struct RandomFormat;
 
 impl Format for RandomFormat {
-    fn name(&self) -> &str {
-        "random"
-    }
+    fn name(&self) -> &str { "random" }
 
-    fn round_trippable(&self) -> bool {
-        true
-    }
+    fn round_trippable(&self) -> bool { true }
 }
 
 impl InputFormat for RandomFormat {

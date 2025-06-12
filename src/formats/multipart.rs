@@ -1,21 +1,16 @@
-use anyhow::{ Result, bail };
+use anyhow::{Result, bail};
 use bc_envelope::Envelope;
 use bc_ur::{MultipartDecoder, MultipartEncoder, URDecodable, UREncodable};
 
-use crate::{ cli::Cli, seed::Seed };
-
-use super::{ Format, InputFormat, OutputFormat };
+use super::{Format, InputFormat, OutputFormat};
+use crate::{cli::Cli, seed::Seed};
 
 pub struct MultipartFormat;
 
 impl Format for MultipartFormat {
-    fn name(&self) -> &str {
-        "multipart"
-    }
+    fn name(&self) -> &str { "multipart" }
 
-    fn round_trippable(&self) -> bool {
-        true
-    }
+    fn round_trippable(&self) -> bool { true }
 }
 
 impl InputFormat for MultipartFormat {
