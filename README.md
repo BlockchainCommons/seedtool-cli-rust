@@ -43,6 +43,12 @@ cargo install --path .
 
 ## Version History
 
+### 0.3.0: July 3, 2025
+
+- Align to dependencies.
+- Update envelope API calls for compatibility.
+- Improve code formatting and consistency.
+
 ### 0.1.10: December 24, 2024
 
 - Aligned dependencies to latest versions.
