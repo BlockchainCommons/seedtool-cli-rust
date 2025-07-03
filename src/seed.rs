@@ -8,7 +8,7 @@ pub struct Seed {
     data: Vec<u8>,
     name: String, // Empty string: no name
     note: String, // Empty string: no note
-    creation_date: Option<dcbor::Date>,
+    creation_date: Option<Date>,
 }
 
 impl Seed {
@@ -23,7 +23,7 @@ impl Seed {
         data: T,
         name: S,
         note: U,
-        creation_date: Option<dcbor::Date>,
+        creation_date: Option<Date>,
     ) -> Self
     where
         T: AsRef<[u8]>,
@@ -52,13 +52,13 @@ impl Seed {
         self.note = note.as_ref().to_string();
     }
 
-    pub fn creation_date(&self) -> Option<&dcbor::Date> {
+    pub fn creation_date(&self) -> Option<&Date> {
         self.creation_date.as_ref()
     }
 
     pub fn set_creation_date(
         &mut self,
-        creation_date: Option<impl AsRef<dcbor::Date>>,
+        creation_date: Option<impl AsRef<Date>>,
     ) {
         self.creation_date = creation_date.map(|s| s.as_ref().clone());
     }
@@ -74,7 +74,7 @@ impl From<Seed> for CBOR {
 
 impl CBORTaggedEncodable for Seed {
     fn untagged_cbor(&self) -> CBOR {
-        let mut map = dcbor::Map::new();
+        let mut map = Map::new();
         map.insert(1, CBOR::to_byte_string(self.data()));
         if let Some(creation_date) = self.creation_date() {
             map.insert(2, creation_date.clone());
@@ -107,7 +107,7 @@ impl CBORTaggedDecodable for Seed {
         if data.is_empty() {
             return Err("invalid seed data".into());
         }
-        let creation_date = map.get::<i32, dcbor::Date>(2);
+        let creation_date = map.get::<i32, Date>(2);
         let name = map.get::<i32, String>(3).unwrap_or_default();
         let note = map.get::<i32, String>(4).unwrap_or_default();
         Ok(Self::new_opt(data, name, note, creation_date))
@@ -158,7 +158,7 @@ impl TryFrom<Envelope> for Seed {
             .unwrap_or_default()
             .to_string();
         let creation_date = envelope
-            .extract_optional_object_for_predicate::<dcbor::Date>(
+            .extract_optional_object_for_predicate::<Date>(
                 known_values::DATE,
             )?
             .map(|s| s.as_ref().clone());

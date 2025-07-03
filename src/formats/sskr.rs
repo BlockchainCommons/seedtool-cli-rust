@@ -10,9 +10,13 @@ use crate::{cli::Cli, seed::Seed};
 pub struct SSKRFormat;
 
 impl Format for SSKRFormat {
-    fn name(&self) -> &str { "sskr" }
+    fn name(&self) -> &str {
+        "sskr"
+    }
 
-    fn round_trippable(&self) -> bool { true }
+    fn round_trippable(&self) -> bool {
+        true
+    }
 }
 
 impl InputFormat for SSKRFormat {
@@ -55,7 +59,7 @@ fn output_sskr_seed(
             let envelope = seed.to_envelope();
             let content_key = SymmetricKey::new();
             let encrypted_envelope =
-                envelope.wrap_envelope().encrypt_subject(&content_key)?;
+                envelope.wrap().encrypt_subject(&content_key)?;
             let share_envelopes =
                 encrypted_envelope.sskr_split_flattened(spec, &content_key)?;
             let share_envelopes_strings = share_envelopes
@@ -132,7 +136,7 @@ fn parse_envelopes(input: &str) -> Result<Seed> {
         .collect();
     let share_envelopes_refs: Vec<&Envelope> = share_envelopes.iter().collect();
     let recovered_envelope =
-        Envelope::sskr_join(&share_envelopes_refs)?.unwrap_envelope()?;
+        Envelope::sskr_join(&share_envelopes_refs)?.try_unwrap()?;
     Seed::try_from(recovered_envelope)
 }
 
@@ -244,13 +248,11 @@ fn parse_sskr_seed(input: &str) -> Result<Seed> {
 #[cfg(test)]
 mod tests {
     use bc_rand::{RandomNumberGenerator, SecureRandomNumberGenerator};
-    use dcbor::Date;
     use hex_literal::hex;
     use indoc::indoc;
-    use sskr::{GroupSpec, Spec};
+    use sskr::GroupSpec;
 
-    use super::{SSKRFormatKey, output_sskr_seed, parse_sskr_seed};
-    use crate::seed::Seed;
+    use super::*;
 
     fn test_format(format: &SSKRFormatKey, check_metadata: bool) {
         let mut rng = SecureRandomNumberGenerator;

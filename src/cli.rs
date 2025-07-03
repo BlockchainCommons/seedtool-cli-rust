@@ -22,11 +22,11 @@ pub fn parse_group_threshold(s: &str) -> Result<usize, String> {
     number_range(s, 1, 16)
 }
 
-fn parse_date(s: &str) -> Result<dcbor::Date, String> {
+fn parse_date(s: &str) -> Result<Date, String> {
     if s == "now" {
-        Ok(dcbor::Date::now())
+        Ok(Date::now())
     } else {
-        dcbor::Date::from_string(s).map_err(|e| e.to_string())
+        Date::from_string(s).map_err(|e| e.to_string())
     }
 }
 
@@ -105,7 +105,7 @@ pub struct Cli {
     /// May also be `now`.
     #[arg(help_heading = Some("Metadata"), long, value_name = "DATE")]
     #[clap(value_parser = parse_date)]
-    pub date: Option<dcbor::Date>,
+    pub date: Option<Date>,
 
     /// For `multipart` output, the UR will be segmented into parts with
     /// fragments no larger than MAX_FRAG_LEN
