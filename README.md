@@ -43,6 +43,11 @@ cargo install --path .
 
 ## Version History
 
+### 0.3.1: September 16, 2025
+
+- Align to dependencies.
+- Update documentation command line examples.
+
 ### 0.3.0: July 3, 2025
 
 - Align to dependencies.
