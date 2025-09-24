@@ -10,13 +10,9 @@ use crate::{cli::Cli, seed::Seed};
 pub struct SSKRFormat;
 
 impl Format for SSKRFormat {
-    fn name(&self) -> &str {
-        "sskr"
-    }
+    fn name(&self) -> &str { "sskr" }
 
-    fn round_trippable(&self) -> bool {
-        true
-    }
+    fn round_trippable(&self) -> bool { true }
 }
 
 impl InputFormat for SSKRFormat {

@@ -52,9 +52,7 @@ impl Seed {
         self.note = note.as_ref().to_string();
     }
 
-    pub fn creation_date(&self) -> Option<&Date> {
-        self.creation_date.as_ref()
-    }
+    pub fn creation_date(&self) -> Option<&Date> { self.creation_date.as_ref() }
 
     pub fn set_creation_date(
         &mut self,
@@ -158,9 +156,7 @@ impl TryFrom<Envelope> for Seed {
             .unwrap_or_default()
             .to_string();
         let creation_date = envelope
-            .extract_optional_object_for_predicate::<Date>(
-                known_values::DATE,
-            )?
+            .extract_optional_object_for_predicate::<Date>(known_values::DATE)?
             .map(|s| s.as_ref().clone());
         Ok(Self::new_opt(data, name, note, creation_date))
     }
