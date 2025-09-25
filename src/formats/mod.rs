@@ -31,5 +31,7 @@ mod sskr;
 pub use sskr::{SSKRFormat, SSKRFormatKey};
 mod envelope;
 pub use envelope::EnvelopeFormat;
+mod seed;
+pub use seed::SeedFormat;
 mod multipart;
 pub use multipart::MultipartFormat;

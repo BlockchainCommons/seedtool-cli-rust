@@ -1,5 +1,5 @@
 use anyhow::{Error, Result};
-use bc_components::tags;
+use bc_components::{Seed as ComponentsSeed, tags};
 use bc_envelope::{Envelope, known_values};
 use dcbor::prelude::*;
 
@@ -159,5 +159,41 @@ impl TryFrom<Envelope> for Seed {
             .extract_optional_object_for_predicate::<Date>(known_values::DATE)?
             .map(|s| s.as_ref().clone());
         Ok(Self::new_opt(data, name, note, creation_date))
+    }
+}
+
+fn optional_string(value: &str) -> Option<String> {
+    if value.is_empty() {
+        None
+    } else {
+        Some(value.to_string())
+    }
+}
+
+impl From<ComponentsSeed> for Seed {
+    fn from(seed: ComponentsSeed) -> Self {
+        let creation_date = seed.creation_date().clone();
+        Self::new_opt(seed.as_bytes(), seed.name(), seed.note(), creation_date)
+    }
+}
+
+impl TryFrom<&Seed> for ComponentsSeed {
+    type Error = bc_components::Error;
+
+    fn try_from(seed: &Seed) -> Result<Self, Self::Error> {
+        ComponentsSeed::new_opt(
+            seed.data(),
+            optional_string(seed.name()),
+            optional_string(seed.note()),
+            seed.creation_date().cloned(),
+        )
+    }
+}
+
+impl TryFrom<Seed> for ComponentsSeed {
+    type Error = bc_components::Error;
+
+    fn try_from(seed: Seed) -> Result<Self, Self::Error> {
+        Self::try_from(&seed)
     }
 }

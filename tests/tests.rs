@@ -104,6 +104,13 @@ fn test_formats() -> Result<()> {
     assert_eq!(run_cli(&["--in", "hex", "--out", "btwu", hex])?, btwu);
     assert_eq!(run_cli(&["--in", "btwu", "--out", "hex", btwu])?, hex);
 
+    let seed_ur = run_cli(&["--in", "hex", "--out", "seed", hex])?;
+    assert!(seed_ur.starts_with("ur:seed/"));
+    assert_eq!(
+        run_cli(&["--in", "seed", "--out", "hex", seed_ur.as_str()])?,
+        hex
+    );
+
     Ok(())
 }
 

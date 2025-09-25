@@ -5,7 +5,7 @@ use super::{
     Base6Format, Base10Format, Bip39Format, BitsFormat, BytewordsMinimalFormat,
     BytewordsStandardFormat, BytewordsUriFormat, CardsFormat, DiceFormat,
     EnvelopeFormat, HexFormat, IntsFormat, MultipartFormat, RandomFormat,
-    SSKRFormat,
+    SSKRFormat, SeedFormat,
 };
 use crate::cli::Cli;
 
@@ -39,6 +39,7 @@ pub enum InputFormatKey {
     Sskr,
     Envelope,
     Multipart,
+    Seed,
 }
 
 pub fn select_input_format(
@@ -60,6 +61,7 @@ pub fn select_input_format(
         InputFormatKey::Sskr => Box::new(SSKRFormat),
         InputFormatKey::Envelope => Box::new(EnvelopeFormat),
         InputFormatKey::Multipart => Box::new(MultipartFormat),
+        InputFormatKey::Seed => Box::new(SeedFormat),
     }
 }
 
@@ -79,6 +81,7 @@ pub enum OutputFormatKey {
     Sskr,
     Envelope,
     Multipart,
+    Seed,
 }
 
 pub fn select_output_format(
@@ -99,5 +102,6 @@ pub fn select_output_format(
         OutputFormatKey::Sskr => Box::new(SSKRFormat),
         OutputFormatKey::Envelope => Box::new(EnvelopeFormat),
         OutputFormatKey::Multipart => Box::new(MultipartFormat),
+        OutputFormatKey::Seed => Box::new(SeedFormat),
     }
 }

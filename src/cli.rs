@@ -213,7 +213,7 @@ impl Cli {
         }
     }
 
-    pub fn to_envelope(&self) -> Envelope {
+    pub fn seed_with_overrides(&self) -> Seed {
         let mut seed = self.expect_seed().clone();
         if let Some(name) = &self.name {
             seed.set_name(name);
@@ -224,7 +224,11 @@ impl Cli {
         if let Some(date) = &self.date {
             seed.set_creation_date(Some(date));
         }
-        seed.into_envelope()
+        seed
+    }
+
+    pub fn to_envelope(&self) -> Envelope {
+        self.seed_with_overrides().into_envelope()
     }
 
     pub fn sskr_spec(&self) -> Result<SSKRSpec> {
