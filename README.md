@@ -43,6 +43,10 @@ cargo install --path .
 
 ## Version History
 
+### 0.4.0: September 26, 2025
+
+- Added ur:seed format support.
+
 ### 0.3.1: September 16, 2025
 
 - Align to dependencies.
