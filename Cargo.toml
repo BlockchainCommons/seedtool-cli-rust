@@ -19,13 +19,13 @@ name = "seedtool"
 path = "src/main.rs"
 
 [dependencies]
-dcbor = "^0.23.0"
-bc-ur = "^0.13.0"
-bc-envelope = "^0.34.0"
-bc-components = "^0.25.0"
-bc-rand = "^0.4.0"
-bc-crypto = "^0.10.0"
-sskr = "^0.9.0"
+dcbor = "^0.23.3"
+bc-ur = "^0.16.0"
+bc-envelope = "^0.37.0"
+bc-components = "^0.28.0"
+bc-rand = "^0.4.2"
+bc-crypto = "^0.13.0"
+sskr = "^0.11.0"
 
 clap = { version = "^4.4.3", features = ["derive", "unstable-styles"] }
 anyhow = "^1.0.0"

@@ -199,13 +199,12 @@ fn parse_ur(
             // Legacy SSKR shares might have tagged CBOR, even though they're
             // URs so they shouldn't be.
             let mut cbor = ur.cbor();
-            if allow_tagged_cbor {
-                if let Ok(untagged_cbor) = cbor
+            if allow_tagged_cbor
+                && let Ok(untagged_cbor) = cbor
                     .clone()
                     .try_into_expected_tagged_value(expected_tag.clone())
-                {
-                    cbor = untagged_cbor;
-                }
+            {
+                cbor = untagged_cbor;
             }
             Ok(cbor)
         })

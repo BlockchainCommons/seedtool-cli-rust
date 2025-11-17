@@ -55,7 +55,7 @@ pub fn parse_suit(c: char) -> Result<usize> {
 
 pub fn cards_to_data(cards: &str) -> Result<Vec<u8>> {
     let len = cards.len();
-    if len % 2 != 0 {
+    if !len.is_multiple_of(2) {
         bail!("Cards string must have even number of characters.");
     }
     let count = len / 2;
