@@ -221,7 +221,7 @@ impl Cli {
         if let Some(note) = &self.note {
             seed.set_note(note);
         }
-        if let Some(date) = &self.date {
+        if let Some(date) = self.date {
             seed.set_creation_date(Some(date));
         }
         seed
