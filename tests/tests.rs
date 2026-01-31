@@ -148,7 +148,7 @@ fn test_envelope() -> Result<()> {
     );
 
     let envelope = Envelope::from_ur_string(renamed)?;
-    // println!("{}", envelope.format());
+    // expected-text-output-rubric:
     #[rustfmt::skip]
     assert_eq!(envelope.format(), (indoc! {r#"
         Bytes(16) [
