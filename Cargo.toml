@@ -21,7 +21,7 @@ path = "src/main.rs"
 [dependencies]
 dcbor = "^0.25.0"
 bc-ur = "^0.19.0"
-bc-envelope = "^0.41.1"
+bc-envelope = "^0.43.0"
 bc-components = "^0.31.0"
 bc-rand = "^0.5.0"
 bc-crypto = "^0.13.0"
